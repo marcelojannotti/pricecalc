@@ -1,0 +1,15 @@
+{
+  "name": "Calculadora de Preços",
+  "short_name": "Calc. Preços",
+  "start_url": ".",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#383838",
+  "theme_color": "#ffffff",
+  "description": "Ferramenta para calcular preço por unidade e descontos.",
+  "icons": [{
+    "src": "icon.png",
+    "sizes": "48x48",
+    "type": "image/png"
+  }]
+}

@@ -1,0 +1,101 @@
+<html>
+<link rel="manifest" href="manifest.json"/>
+  <script>
+  function calcClass(prc=0,un=1,desc=0,tpdesc='%') {
+    this.preco = prc;
+    Object.defineProperty(this,'preco',{
+     get: function() { 
+      return prc/100;
+     },
+     set: function(newValue) {
+      if (typeof(newValue) != 'number') TypeError('Valor inválido');
+      prc = (newValue.toString().replace(',','.'))*100;
+     },
+     enumerable: false,
+     configurable: false
+    });
+    Object.defineProperty(this,'unidade',{
+     get: function() { 
+      return un;
+     },
+     set: function(newValue) {
+      if (isNaN(newValue*1)) TypeError('Valor inválido');
+      if (newValue < 1) throw('Valor menor que 1');
+      un = (newValue.toString().replace(',','.'))*1;
+     },
+     enumerable: false,
+     configurable: false
+    });
+    Object.defineProperty(this,'desconto',{
+     get: function() { 
+      return desc/(tpdesc == '%'?1:100);
+     },
+     set: function(newValue) {
+      if (typeof(newValue) != 'number') TypeError('Valor inválido');
+      desc = (newValue.toString().replace(',','.'))*(tpdesc == '%'?1:100);
+     },
+     enumerable: false,
+     configurable: false
+    });
+    Object.defineProperty(this,'tipoDesconto',{
+     get: function() { 
+      return tpdesc;
+     },
+     set: function(newValue) {
+      if (['%','$'].indexOf(newValue) < 0) throw('Valor inválido');
+      tpdesc = newValue;
+     },
+     enumerable: false,
+     configurable: false
+    });
+
+    Object.defineProperty(this,'total',{
+     get: function() {
+      let tPrc = ((prc)*un);
+      tDesc = desc;
+      if (tDesc > 0) tDesc = (tpdesc == '$'?tDesc:tPrc*(tDesc/100));
+      return (tPrc-tDesc)/100;
+     },
+     set: function(newValue) {},
+     enumerable: false,
+     configurable: false
+    });
+    Object.defineProperty(this,'totalPorUnidade',{
+     get: function() {
+      let tPrc = ((prc)*un);
+      tDesc = desc;
+      if (tDesc > 0) tDesc = (tpdesc == '$'?tDesc:tPrc*(tDesc/100));
+      return ((tPrc-tDesc)/un)/100;
+     },
+     set: function(newValue) {},
+     enumerable: false,
+     configurable: false
+    });
+    Object.defineProperty(this,'totalDesconto',{
+     get: function() {
+      let tPrc = ((prc)*un);
+      tDesc = desc;
+      if (tDesc > 0) tDesc = (tpdesc == '$'?tDesc:tPrc*(tDesc/100));
+      return (tDesc)/100;
+     },
+     set: function(newValue) {},
+     enumerable: false,
+     configurable: false
+    });
+  }
+  oCalc = new calcClass();
+  </script>
+	<head>
+		<title>Calculadora de Preços</title>
+	</head>
+	<body style="background-color:#383838;color:white;height:100%;width:100%;padding:0;margin:0;font-size:1in;">
+	<div style="overflow:visible;margin-bottom:20%;">
+	<div style="margin:10px 5px;"><div>Preço</div><div>R$ <input id="preco" type="number" value="0" oninput="oCalc.preco=this.value; document.getElementById('tvalun').innerHTML = oCalc.totalPorUnidade;document.getElementById('total').innerHTML = oCalc.total;document.getElementById('tdesc').innerHTML = oCalc.totalDesconto;" style="height:1in;font-size:1in;"/></div></div>
+	<div style="margin:10px 5px;"><div>Unidades</div><div><input id="un" type="number" value="1" oninput="oCalc.unidade=this.value; document.getElementById('tun').innerHTML = oCalc.unidade; document.getElementById('tvalun').innerHTML = oCalc.totalPorUnidade;document.getElementById('total').innerHTML = oCalc.total;document.getElementById('tdesc').innerHTML = oCalc.totalDesconto;" style="height:1in;font-size:1in;"/> (Kg/Gr/Un/L/mL)</div></div>
+	<div style="margin:10px 5px;"><div>Desconto</div><div style="white-space:nowrap;"><input id="desc" type="number" value="0" oninput="oCalc.desconto=this.value; document.getElementById('tvalun').innerHTML = oCalc.totalPorUnidade; document.getElementById('total').innerHTML = oCalc.total;document.getElementById('tdesc').innerHTML = oCalc.totalDesconto;" style="height:1in;font-size:1in;max-width:80%;"/> <select id="tpdesc" onchange="oCalc.tipoDesconto=this.selectedOptions[0].value;oCalc.desconto=document.getElementById('desc').value; document.getElementById('tvalun').innerHTML = oCalc.totalPorUnidade;document.getElementById('tdesc').innerHTML = oCalc.totalDesconto;document.getElementById('total').innerHTML = oCalc.total;" style="height:1in;font-size:1in;"><option value="%">%</option><option value="$">$</option></select></div></div>
+	</div>
+	<div style="height:20%;position:fixed; bottom:0;width:100%;padding:0.5in;background-color:white;color:black;font-size:1in;"><div>Total</div><div style="font-weight:bold;">(<span id='tun'>1</span>) <span id="tvalun">0,00</span> = R$ <span id="total">0,00</span></div>
+	<div style="font-weight:bold;">Descontos R$ <span id="tdesc">0,00</span></div>
+	</div>
+	</body>
+</html>
