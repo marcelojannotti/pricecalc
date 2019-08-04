@@ -21,7 +21,7 @@
      },
      set: function(newValue) {
       if (isNaN(newValue*1)) TypeError('Valor inválido');
-      if (newValue < 1) throw('Valor menor que 1');
+      if (newValue =< 0) throw('Valor menor que 1');
       un = (newValue.toString().replace(',','.'))*1;
      },
      enumerable: false,
