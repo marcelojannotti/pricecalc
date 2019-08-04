@@ -1,6 +1,11 @@
 <html>
 <link rel="manifest" href="manifest.json"/>
   <script>
+	  
+if ('serviceWorker' in navigator) {
+  // sw.js can literally be empty, but must exist
+  navigator.serviceWorker.register('/sw.js');
+}
   function calcClass(prc=0,un=1,desc=0,tpdesc='%') {
     this.preco = prc;
     Object.defineProperty(this,'preco',{
